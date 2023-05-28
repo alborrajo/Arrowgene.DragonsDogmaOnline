@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint Unk3 { get; set;}
         public uint Unk4 { get; set;}
         public ulong Unk5 { get; set; } // EndDistributionDate?
-        public ulong Unk6 { get; set; } // EndDistributionDate?
+        public ulong Unk6 { get; set; } // EndDistributionDate? This one is definitely a timestamp
         public List<CDataRewardItem> FixedRewardItemList;
         public List<CDataRewardItem> FixedRewardSelectItemList;
         public List<CDataQuestListUnk7> Unk7;

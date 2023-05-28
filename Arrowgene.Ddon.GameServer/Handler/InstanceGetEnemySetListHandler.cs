@@ -27,11 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte subGroupId = request.Structure.SubGroupId;
             client.Character.Stage = stageId;
 
-   
             List<EnemySpawn> spawns = _enemyManager.GetAssets(stageId, subGroupId);
-            
-            // TODO test
-            // spawns.AddRange(_enemyManager.GetSpawns(new StageId(1,0,15), 0));
 
             S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes();
             response.LayoutId = stageId.ToStageLayoutId();
@@ -46,6 +42,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 enemy.EnemyInfo = spawn.Enemy;
                 response.EnemyList.Add(enemy);
             }
+
+            response.QuestId = 0x1314092;
 
             client.Send(response);
         }

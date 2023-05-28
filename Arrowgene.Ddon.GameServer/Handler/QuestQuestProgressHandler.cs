@@ -2,12 +2,13 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestQuestProgressHandler : PacketHandler<GameClient>
+    public class QuestQuestProgressHandler : StructurePacketHandler<GameClient, C2SQuestQuestProgressReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestProgressHandler));
 
@@ -16,9 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_QUEST_PROGRESS_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
         {
             IBuffer inBuffer = new StreamBuffer(packet.Data);
             inBuffer.SetPositionStart();
@@ -35,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             outBuffer.WriteInt32(0, Endianness.Big);
             outBuffer.WriteInt32(0, Endianness.Big);
             outBuffer.WriteByte(0); // QuestProgressResult
-            outBuffer.WriteUInt32(data2, Endianness.Big); // QuestScheduleId
+            outBuffer.WriteUInt32(packet.Structure.QuestScheduleId, Endianness.Big); // QuestScheduleId
             outBuffer.WriteUInt32(0, Endianness.Big); // QuestProgressStateList
             //client.Send(new Packet(PacketId.S2C_QUEST_QUEST_PROGRESS_RES, outBuffer.GetAllBytes()));
 
