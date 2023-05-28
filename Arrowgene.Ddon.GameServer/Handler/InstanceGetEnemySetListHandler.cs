@@ -43,7 +43,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 response.EnemyList.Add(enemy);
             }
 
-            response.QuestId = 0x1314092;
+            // Knight's Bitter Enemy
+            if(response.LayoutId.GroupId == 26) {
+                response.QuestId = 20005010;
+            }
 
             client.Send(response);
         }

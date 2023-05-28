@@ -556,6 +556,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetSetQuestListRes.Serializer());
             Create(new S2CQuestJoinLobbyQuestInfoNtc.Serializer());
             Create(new S2CQuestPartyQuestProgressNtc.Serializer());
+            Create(new S2CQuestQuestProgressNtc.Serializer());
+            Create(new S2CQuestQuestProgressRes.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());
             Create(new S2CQuestSendLeaderWaitOrderQuestListNtc.Serializer());

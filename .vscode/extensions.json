@@ -10,6 +10,7 @@
         "wmaurer.change-case",
         "softwareape.numbermonger",
         "maziac.hex-hover-converter",
-        "ms-dotnettools.csdevkit"
+        "ms-dotnettools.csdevkit",
+        "yevhencherkes.object-dumper"
     ]
 }

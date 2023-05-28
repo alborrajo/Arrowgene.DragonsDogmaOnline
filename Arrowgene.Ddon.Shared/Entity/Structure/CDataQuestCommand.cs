@@ -4,6 +4,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataQuestCommand
     {
+        // 4: Start
+        // 5: Update
         public ushort Command { get; set; }
         public int Param01 { get; set; }
         public int Param02 { get; set; }
