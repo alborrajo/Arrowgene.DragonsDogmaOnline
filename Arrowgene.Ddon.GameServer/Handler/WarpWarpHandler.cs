@@ -24,6 +24,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint price = packet.Structure.Price; // TODO: Don't trust packet.Structure.Price and check its price server side
 
             CDataWalletPoint walletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.RiftPoints).Single();
+            // TODO: Return an error/result if the price is higher than the wallet points
+            
             walletPoint.Value -= price;
             Database.UpdateWalletPoint(client.Character.CharacterId, walletPoint);
 

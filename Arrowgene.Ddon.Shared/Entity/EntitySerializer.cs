@@ -321,9 +321,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestGetPackageQuestListReq.Serializer());
             Create(new C2SQuestGetSetQuestListReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
+            Create(new C2SQuestQuestOrderReq.Serializer());
             Create(new C2SQuestQuestProgressReq.Serializer());
             Create(new C2SQuestSendLeaderQuestOrderConditionInfoReq.Serializer());
             Create(new C2SQuestSendLeaderWaitOrderQuestListReq.Serializer());
+            Create(new C2SQuestSetPriorityQuestReq.Serializer());
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
             Create(new C2SSkillChangeExSkillReq.Serializer());
@@ -556,12 +558,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetSetQuestListRes.Serializer());
             Create(new S2CQuestJoinLobbyQuestInfoNtc.Serializer());
             Create(new S2CQuestPartyQuestProgressNtc.Serializer());
+            Create(new S2CQuestQuestOrderRes.Serializer());
             Create(new S2CQuestQuestProgressNtc.Serializer());
             Create(new S2CQuestQuestProgressRes.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());
             Create(new S2CQuestSendLeaderWaitOrderQuestListNtc.Serializer());
             Create(new S2CQuestSendLeaderWaitOrderQuestListRes.Serializer());
+            Create(new S2CQuestSetPriorityQuestRes.Serializer());
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
