@@ -112,6 +112,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLightQuestDetail.Serializer());
             Create(new CDataLightQuestList.Serializer());
             Create(new CDataLightQuestOrderList.Serializer());
+            Create(new CDataQuestOrderListUnk8.Serializer());
             Create(new CDataLobbyContextPlayer.Serializer());
             Create(new CDataLobbyMemberInfoSerializer());
             Create(new CDataLoginSettingSerializer());

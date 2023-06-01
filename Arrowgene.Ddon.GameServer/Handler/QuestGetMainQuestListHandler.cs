@@ -21,16 +21,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(GameFull.Dump_123);
-
-            S2CQuestGetMainQuestListRes res = new S2CQuestGetMainQuestListRes();
-            res.KeyId = 1;
-            res.QuestScheduleId = 1;
-            res.QuestId = 1;
-            res.NameMsgId = 1;
-            res.DetailMsgId = 2;
-            res.OrderNpcId = 1;
-            res.BaseLevel = 15;
-            //client.Send(res);
         }
     }
 }
