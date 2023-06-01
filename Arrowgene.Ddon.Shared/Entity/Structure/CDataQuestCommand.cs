@@ -4,20 +4,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataQuestCommand
     {
-        // COMMANDS:
-        //  CheckCommand:
-        //      Command 5: Delivery Item
-        //          Param01: Item ID
-        //          Param02: Quantity
-        //      Command 14: Check Zone
-        //          Param01: Stage ID? (211 = Arisen Room)
-        //  ResultCommand:
-        //      Command 4: Quest Start/Finish
-        //          Param01: 0 = Start, 1 = Finish
-        //      Command 5: Update
-        //      Command 72: Next NPC?
-        //          Param01: Stage ID? (211 = Arisen Room)
-        //          Param02: NPC ID?
         public ushort Command { get; set; }
         public int Param01 { get; set; }
         public int Param02 { get; set; }
@@ -51,220 +37,318 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
 /*
 From the PS4 build:
-enum nQuestScript::COMMAND_CHECK_LIST : __int32
-{
-  COMMAND_CHECK = 0x0,
-  COMMAND_CHECK_TALK_NPC = 0x1,
-  COMMAND_CHECK_DIE_ENEMY = 0x2,
-  COMMAND_CHECK_SCE_HIT_IN = 0x3,
-  COMMAND_CHECK_HAVE_ITEM = 0x4,
-  COMMAND_CHECK_DELIVER_ITEM = 0x5,
-  COMMAND_CHECK_EM_DIE_LIGHT = 0x6,
-  COMMAND_CHECK_QST_FLAG_ON = 0x7,
-  COMMAND_CHECK_QST_FLAG_OFF = 0x8,
-  COMMAND_CHECK_MY_QST_FLAG_ON = 0x9,
-  COMMAND_CHECK_MY_QST_FLAG_OFF = 0xA,
-  COMMAND_CHECK_PADDING_00 = 0xB,
-  COMMAND_CHECK_PADDING_01 = 0xC,
-  COMMAND_CHECK_PADDING_02 = 0xD,
-  COMMAND_CHECK_STAGE_NO = 0xE,
-  COMMAND_CHECK_EVENT_END = 0xF,
-  COMMAND_CHECK_PRT = 0x10,
-  COMMAND_CHECK_CLEARCOUNT = 0x11,
-  COMMAND_CHECK_SCE_FLAG_ON = 0x12,
-  COMMAND_CHECK_SCE_FLAG_OFF = 0x13,
-  COMMAND_CHECK_TOUCH_ACT_TO_NPC = 0x14,
-  COMMAND_CHECK_ORDER_DECIDE = 0x15,
-  COMMAND_CHECK_IS_END_CYCLE = 0x16,
-  COMMAND_CHECK_IS_INTERRUPT_CYCLE = 0x17,
-  COMMAND_CHECK_IS_FAILED_CYCLE = 0x18,
-  COMMAND_CHECK_IS_END_RESULT = 0x19,
-  COMMAND_CHECK_NPC_TALK_AND_ORDER_UI = 0x1A,
-  COMMAND_CHECK_NPC_TOUCH_AND_ORDER_UI = 0x1B,
-  COMMAND_CHECK_STAGE_NO_NOT_EQ = 0x1C,
-  COMMAND_CHECK_WARLEVEL = 0x1D,
-  COMMAND_CHECK_TALK_NPC_WITHOUT_MARKER = 0x1E,
-  COMMAND_CHECK_HAVE_MONEY = 0x1F,
-  COMMAND_CHECK_SET_QUEST_CLEAR_NUM = 0x20,
-  COMMAND_CHECK_MAKE_CRAFT = 0x21,
-  COMMAND_CHECK_PLAY_EMOTION = 0x22,
-  COMMAND_CHECK_IS_END_TIMER = 0x23,
-  COMMAND_CHECK_IS_ENEMY_FOUND = 0x24,
-  COMMAND_CHECK_RANDOM_EQ = 0x25,
-  COMMAND_CHECK_RANDOM_NOT_EQ = 0x26,
-  COMMAND_CHECK_RANDOM_LESS = 0x27,
-  COMMAND_CHECK_RANDOM_NOT_GREATER = 0x28,
-  COMMAND_CHECK_RANDOM_GREATER = 0x29,
-  COMMAND_CHECK_RANDOM_NOT_LESS = 0x2A,
-  COMMAND_CHECK_CLEARCOUNT_02 = 0x2B,
-  COMMAND_CHECK_INGAME_TIME_RANGE_EQ = 0x2C,
-  COMMAND_CHECK_INGAME_TIME_RANGE_NOT_EQ = 0x2D,
-  COMMAND_CHECK_PL_HP = 0x2E,
-  COMMAND_CHECK_EM_HP_NOT_LESS = 0x2F,
-  COMMAND_CHECK_EM_HP_LESS = 0x30,
-  COMMAND_CHECK_WEATHER_EQ = 0x31,
-  COMMAND_CHECK_WEATHER_NOT_EQ = 0x32,
-  COMMAND_CHECK_PL_JOB_EQ = 0x33,
-  COMMAND_CHECK_PL_JOB_NOT_EQ = 0x34,
-  COMMAND_CHECK_PL_SEX_EQ = 0x35,
-  COMMAND_CHECK_PL_SEX_NOT_EQ = 0x36,
-  COMMAND_CHECK_SCE_HIT_OUT = 0x37,
-  COMMAND_CHECK_WAIT_ORDER = 0x38,
-  COMMAND_CHECK_OM_SET_TOUCH = 0x39,
-  COMMAND_CHECK_OM_RELEASE_TOUCH = 0x3A,
-  COMMAND_CHECK_JOB_LEVEL_NOT_LESS = 0x3B,
-  COMMAND_CHECK_JOB_LEVEL_LESS = 0x3C,
-  COMMAND_CHECK_MY_QST_FLAG_ON_FROM_FSM = 0x3D,
-  COMMAND_CHECK_SCE_HIT_IN_WITHOUT_MARKER = 0x3E,
-  COMMAND_CHECK_SCE_HIT_OUT_WITHOUT_MARKER = 0x3F,
-  COMMAND_CHECK_KEY_ITEM_POINT = 0x40,
-  COMMAND_CHECK_IS_NOT_END_TIMER = 0x41,
-  COMMAND_CHECK_IS_MAIN_QUEST_CLEAR = 0x42,
-  COMMAND_CHECK_DOGMA_ORB = 0x43,
-  COMMAND_CHECK_IS_ENEMY_FOUND_FOR_ORDER = 0x44,
-  COMMAND_CHECK_IS_TUTORIAL_FLAG_ON = 0x45,
-  COMMAND_CHECK_QUEST_OM_SET_TOUCH = 0x46,
-  COMMAND_CHECK_QUEST_OM_RELEASE_TOUCH = 0x47,
-  COMMAND_CHECK_NEW_TALK_NPC = 0x48,
-  COMMAND_CHECK_NEW_TALK_NPC_WITHOUT_MARKER = 0x49,
-  COMMAND_CHECK_IS_TUTORIAL_QUEST_CLEAR = 0x4A,
-  COMMAND_CHECK_IS_MAIN_QUEST_ORDER = 0x4B,
-  COMMAND_CHECK_IS_TUTORIAL_QUEST_ORDER = 0x4C,
-  COMMAND_CHECK_IS_TOUCH_PAWN_DUNGEON_OM = 0x4D,
-  COMMAND_CHECK_IS_OPEN_DOOR_OM_QUEST_SET = 0x4E,
-  COMMAND_CHECK_EM_DIE_FOR_RANDOM_DUNGEON = 0x4F,
-  COMMAND_CHECK_NPC_HP_NOT_LESS = 0x50,
-  COMMAND_CHECK_NPC_HP_LESS = 0x51,
-  COMMAND_CHECK_IS_ENEMY_FOUND_WITHOUT_MARKER = 0x52,
-  COMMAND_CHECK_IS_EVENT_BOARD_ACCEPTED = 0x53,
-  COMMAND_CHECK_WORLD_MANAGE_QUEST_FLAG_ON = 0x54,
-  COMMAND_CHECK_WORLD_MANAGE_QUEST_FLAG_OFF = 0x55,
-  COMMAND_CHECK_TOUCH_EVENT_BOARD = 0x56,
-  COMMAND_CHECK_OPEN_ENTRY_RAID_BOSS = 0x57,
-  COMMAND_CHECK_OEPN_ENTRY_FORT_DEFENSE = 0x58,
-  COMMAND_CHECK_DIE_PLAYER = 0x59,
-  COMMAND_CHECK_PARTY_NUM_NOT_LESS_WTIHOUT_PAWN = 0x5A,
-  COMMAND_CHECK_PARTY_NUM_NOT_LESS_WITH_PAWN = 0x5B,
-  COMMAND_CHECK_LOST_MAIN_PAWN = 0x5C,
-  COMMAND_CHECK_SP_TALK_NPC = 0x5D,
-  COMMAND_CHECK_OEPN_JOB_MASTER = 0x5E,
-  COMMAND_CHECK_TOUCH_RIM_STONE = 0x5F,
-  COMMAND_CHECK_GET_ACHIEVEMENT = 0x60,
-  COMMAND_CHECK_DUMMY_NOT_PROGRESS = 0x61,
-  COMMAND_CHECK_DIE_RAID_BOSS = 0x62,
-  COMMAND_CHECK_CYCLE_TIMER_ZERO = 0x63,
-  COMMAND_CHECK_CYCLE_TIMER = 0x64,
-  COMMAND_CHECK_QUEST_NPC_TALK_AND_ORDER_UI = 0x65,
-  COMMAND_CHECK_QUEST_NPC_TOUCH_AND_ORDER_UI = 0x66,
-  COMMAND_CHECK_IS_FOUND_RAID_BOSS = 0x67,
-  COMMAND_CHECK_QUEST_OM_SET_TOUCH_WITHOUT_MARKER = 0x68,
-  COMMAND_CHECK_QUEST_OM_RELEASE_TOUCH_WITHOUT_MARKER = 0x69,
-  COMMAND_CHECK_TUTORIAL_TALK_NPC = 0x6A,
-  COMMAND_CHECK_IS_LOGIN = 0x6B,
-  COMMAND_CHECK_IS_PLAY_END_FIRST_SEASON_END_CREDIT = 0x6C,
-  COMMAND_CHECK_IS_KILLED_TARGET_ENEMY_SET_GROUP = 0x6D,
-  COMMAND_CHECK_IS_KILLED_TARGET_EM_SET_GRP_NO_MARKER = 0x6E,
-  COMMAND_CHECK_IS_LEFT_CYCLE_TIMER = 0x6F,
-  COMMAND_CHECK_OM_END_TEXT = 0x70,
-  COMMAND_CHECK_QUEST_OM_END_TEXT = 0x71,
-  COMMAND_CHECK_OPEN_AREA_MASTER = 0x72,
-  COMMAND_CHECK_HAVE_ITEM_ALL_BAG = 0x73,
-  COMMAND_CHECK_OPEN_NEWSPAPER = 0x74,
-  COMMAND_CHECK_OPEN_QUEST_BOARD = 0x75,
-  COMMAND_CHECK_STAGE_NO_WITHOUT_MARKER = 0x76,
-  COMMAND_CHECK_TALK_QUEST_NPC_UNIT_MARKER = 0x77,
-  COMMAND_CHECK_TOUCH_QUEST_NPC_UNIT_MARKER = 0x78,
-  COMMAND_CHECK_IS_EXIST_SECOND_PAWN = 0x79,
-  COMMAND_CHECK_IS_ORDER_JOB_TUTORIAL_QUEST = 0x7A,
-  COMMAND_CHECK_IS_OPEN_WAREHOUSE = 0x7B,
-  COMMAND_CHECK_IS_MYQUEST_LAYOUT_FLAG_ON = 0x7C,
-  COMMAND_CHECK_IS_MYQUEST_LAYOUT_FLAG_OFF = 0x7D,
-  COMMAND_CHECK_IS_OPEN_WAREHOUSE_REWARD = 0x7E,
-  COMMAND_CHECK_IS_ORDER_LIGHT_QUEST = 0x7F,
-  COMMAND_CHECK_IS_ORDER_WORLD_QUEST = 0x80,
-  COMMAND_CHECK_IS_LOST_MAIN_PAWN = 0x81,
-  COMMAND_CHECK_IS_FULL_ORDER_QUEST = 0x82,
-  COMMAND_CHECK_IS_BAD_STATUS = 0x83,
-  COMMAND_CHECK_CHECK_AREA_RANK = 0x84,
-  COMMAND_CHECK_PADDING_133 = 0x85,
-  COMMAND_CHECK_ENABLE_PARTY_WARP = 0x86,
-  COMMAND_CHECK_IS_HUGEBLE = 0x87,
-  COMMAND_CHECK_IS_DOWN_ENEMY = 0x88,
-  COMMAND_CHECK_OPEN_AREA_MASTER_SUPPLIES = 0x89,
-  COMMAND_CHECK_OPEN_ENTRY_BOARD = 0x8A,
-  COMMAND_CHECK_NOTICE_INTERRUPT_CONTENTS = 0x8B,
-  COMMAND_CHECK_OPEN_RETRY_SELECT = 0x8C,
-  COMMAND_CHECK_IS_PL_WEAKENING = 0x8D,
-  COMMAND_CHECK_NOTICE_PARTY_INVITE = 0x8E,
-  COMMAND_CHECK_IS_KILLED_AREA_BOSS = 0x8F,
-  COMMAND_CHECK_IS_PARTY_REWARD = 0x90,
-  COMMAND_CHECK_IS_FULL_BAG = 0x91,
-  COMMAND_CHECK_OPEN_CRAFT_EXAM = 0x92,
-  COMMAND_CHECK_LEVEL_UP_CRAFT = 0x93,
-  COMMAND_CHECK_IS_CLEAR_LIGHT_QUEST = 0x94,
-  COMMAND_CHECK_OPEN_JOB_MASTER_REWARD = 0x95,
-  COMMAND_CHECK_TOUCH_ACT_QUEST_NPC = 0x96,
-  COMMAND_CHECK_IS_LEADER_AND_JOIN_PAWN = 0x97,
-  COMMAND_CHECK_IS_ACCEPT_LIGHT_QUEST = 0x98,
-  COMMAND_CHECK_IS_RELEASE_WARP_POINT = 0x99,
-  COMMAND_CHECK_IS_SET_PLAYER_SKILL = 0x9A,
-  COMMAND_CHECK_IS_ORDER_MY_QUEST = 0x9B,
-  COMMAND_CHECK_IS_NOT_ORDER_MY_QUEST = 0x9C,
-  COMMAND_CHECK_HAS_MYPAWN = 0x9D,
-  COMMAND_CHECK_IS_FAVORITE_WARP_POINT = 0x9E,
-  COMMAND_CHECK_CRAFT = 0x9F,
-  COMMAND_CHECK_IS_KILLED_TARGET_ENEMY_SET_GROUP_GM_MAIN = 0xA0,
-  COMMAND_CHECK_IS_KILLED_TARGET_ENEMY_SET_GROUP_GM_SUB = 0xA1,
-  COMMAND_CHECK_HAS_USED_KEY = 0xA2,
-  COMMAND_CHECK_IS_CYCLE_FLAG_OFF_PERIOD = 0xA3,
-  COMMAND_CHECK_IS_ENEMY_FOUND_GM_MAIN = 0xA4,
-  COMMAND_CHECK_IS_ENEMY_FOUND_GM_SUB = 0xA5,
-  COMMAND_CHECK_IS_LOGIN_BUG_FIXED_ONLY = 0xA6,
-  COMMAND_CHECK_IS_SEARCH_CLAN = 0xA7,
-  COMMAND_CHECK_IS_OPEN_AREA_LIST_UI = 0xA8,
-  COMMAND_CHECK_IS_RELEASE_WARP_POINT_ANYONE = 0xA9,
-  COMMAND_CHECK_DEVIDE_PLAYER = 0xAA,
-  COMMAND_CHECK_NOW_PHASE = 0xAB,
-  COMMAND_CHECK_IS_RELEASE_PORTAL = 0xAC,
-  COMMAND_CHECK_IS_GET_APPRAISE_ITEM = 0xAD,
-  COMMAND_CHECK_IS_SET_PARTNER_PAWN = 0xAE,
-  COMMAND_CHECK_IS_PRESENT_PARTNER_PAWN = 0xAF,
-  COMMAND_CHECK_IS_RELEASE_MY_ROOM = 0xB0,
-  COMMAND_CHECK_IS_EXIST_DIVIDE_PLAYER = 0xB1,
-  COMMAND_CHECK_NOT_DIVIDE_PLAYER = 0xB2,
-  COMMAND_CHECK_IS_GATHER_PARTY_IN_STAGE = 0xB3,
-  COMMAND_CHECK_IS_FINISHED_ENEMY_DIVIDE_ACTION = 0xB4,
-  COMMAND_CHECK_IS_OPEN_DOOR_OM_QUEST_SET_NO_MARKER = 0xB5,
-  COMMAND_CHECK_IS_FINISHED_EVENT_ORDER_NUM = 0xB6,
-  COMMAND_CHECK_IS_PRESENT_PARTNER_PAWN_NO_MARKER = 0xB7,
-  COMMAND_CHECK_IS_OM_BROKEN_LAYOUT = 0xB8,
-  COMMAND_CHECK_IS_OM_BROKEN_QUEST = 0xB9,
-  COMMAND_CHECK_IS_HOLDING_PERIOD_CYCLE_CONTENTS = 0xBA,
-  COMMAND_CHECK_IS_NOT_HOLDING_PERIOD_CYCLE_CONTENTS = 0xBB,
-  COMMAND_CHECK_IS_RESET_INSTANCE_AREA = 0xBC,
-  COMMAND_CHECK_CHECK_MOON_AGE = 0xBD,
-  COMMAND_CHECK_IS_ORDER_PAWN_QUEST = 0xBE,
-  COMMAND_CHECK_IS_TAKE_PICTURES = 0xBF,
-  COMMAND_CHECK_IS_STAGE_FOR_MAIN_QUEST = 0xC0,
-  COMMAND_CHECK_IS_RELEASE_PAWN_EXPEDITION = 0xC1,
-  COMMAND_CHECK_OPEN_PP_MODE = 0xC2,
-  COMMAND_CHECK_PP_NOT_LESS = 0xC3,
-  COMMAND_CHECK_OPEN_PP_SHOP = 0xC4,
-  COMMAND_CHECK_TOUCH_CLAN_BOARD = 0xC5,
-  COMMAND_CHECK_IS_ONE_OFF_GATHER = 0xC6,
-  COMMAND_CHECK_IS_OM_BROKEN_LAYOUT_NO_MARKER = 0xC7,
-  COMMAND_CHECK_IS_OM_BROKEN_QUEST_NO_MARKER = 0xC8,
-  COMMAND_CHECK_KEY_ITEM_POINT_EQ = 0xC9,
-  COMMAND_CHECK_IS_EMOTION = 0xCA,
-  COMMAND_CHECK_IS_EQUIP_COLOR = 0xCB,
-  COMMAND_CHECK_IS_EQUIP = 0xCC,
-  COMMAND_CHECK_IS_TAKE_PICTURES_NPC = 0xCD,
-  COMMAND_CHECK_SAY_MESSAGE = 0xCE,
-  COMMAND_CHECK_IS_TAKE_PICTURES_WITHOUT_PAWN = 0xCF,
-  COMMAND_CHECK_IS_LINKAGE_ENEMY_FLAG = 0xD0,
-  COMMAND_CHECK_IS_LINKAGE_ENEMY_FLAG_OFF = 0xD1,
-  COMMAND_CHECK_IS_RELEASE_SECRET_ROOM = 0xD2,
+(Command, Result command execute function)
+
+(1, bool resultLotOn(cQuestProcess * this, s32 stageNo, s32 lotNo, s32 param03, s32 param04))
+(2, bool resultLotOff(cQuestProcess * this, s32 stageNo, s32 lotNo, s32 param03, s32 param04))
+(3, bool resultHandItem(cQuestProcess * this, s32 itemId, s32 itemNum, s32 param03, s32 param04))
+(4, bool resultSetAnnounce(cQuestProcess * this, s32 announceType, s32 param02, s32 param03, s32 param04))
+(5, bool resultUpdateAnnounce(cQuestProcess * this, s32 type, s32 param02, s32 param03, s32 param04))
+(6, bool resultChangeMessage(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(7, bool resultQstFlagOn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(8, bool resultMyQstFlagOn(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(9, bool resultGlobalFlagOn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(10, bool resultQstTalkChg(cQuestProcess * this, s32 npcId, s32 msgNo, s32 param03, s32 param04))
+(11, bool resultQstTalkDel(cQuestProcess * this, s32 npcId, s32 param02, s32 param03, s32 param04))
+(12, bool resultStageJump(cQuestProcess * this, s32 stageNo, s32 startPos, s32 param03, s32 param04))
+(13, bool resultEventExec(cQuestProcess * this, s32 stageNo, s32 eventNo, s32 jumpStageNo, s32 jumpStartPosNo))
+(14, bool resultCallMessage(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(15, bool resultPrt(cQuestProcess * this, s32 stageNo, s32 x, s32 y, s32 z))
+(16, bool resultQstLayoutFlagOn(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(17, bool resultQstLayoutFlagOff(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(18, bool resultQstSceFlagOn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(19, bool resultQstDogmaOrb(cQuestProcess * this, s32 orbNum, s32 param02, s32 param03, s32 param04))
+(20, bool resultGotoMainPwanEdit(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(21, bool resultAddFsmNpcList(cQuestProcess * this, s32 npcId, s32 param02, s32 param03, s32 param04))
+(22, bool resultEndCycle(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(23, bool resultAddCycleTimer(cQuestProcess * this, s32 sec, s32 param02, s32 param03, s32 param04))
+(24, bool resultAddMarkerAtItem(cQuestProcess * this, s32 stageNo, s32 x, s32 y, s32 z))
+(25, bool resultAddMarkerAtDest(cQuestProcess * this, s32 stageNo, s32 x, s32 y, s32 z))
+(26, bool resultAddResultPoint(cQuestProcess * this, s32 tableIndex, s32 param02, s32 param03, s32 param04))
+(27, bool resultPushImteToPlBag(cQuestProcess * this, s32 itemId, s32 itemNum, s32 param03, s32 param04))
+(28, bool resultStartTimer(cQuestProcess * this, s32 timerNo, s32 sec, s32 param03, s32 param04))
+(29, bool resultSetRandom(cQuestProcess * this, s32 randomNo, s32 minValue, s32 maxValue, s32 resultValue))
+(30, bool resultResetRandom(cQuestProcess * this, s32 randomNo, s32 param02, s32 param03, s32 param04))
+(31, bool resultBgmRequest(cQuestProcess * this, s32 type, s32 bgmId, s32 param03, s32 param04))
+(32, bool resultBgmStop(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(33, bool resultSetWaypoint(cQuestProcess * this, s32 npcId, s32 waypointNo0, s32 waypointNo1, s32 waypointNo2))
+(34, bool resultForceTalkQuest(cQuestProcess * this, s32 npcId, s32 groupSerial, s32 param03, s32 param04))
+(35, bool resultTutorialDialog(cQuestProcess * this, s32 guideNo, s32 param02, s32 param03, s32 param04))
+(36, bool resultAddKeyItemPoint(cQuestProcess * this, s32 keyItemIdx, s32 pointNum, s32 param03, s32 param04))
+(37, bool resultDontSaveProcess(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(38, bool resultInterruptCycleContents(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(39, bool resultQuestEvaluationPoint(cQuestProcess * this, s32 point, s32 param02, s32 param03, s32 param04))
+(40, bool resultCheckOrderCondition(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(41, bool resultWorldManageLayoutFlagOn(cQuestProcess * this, s32 flagNo, s32 questId, s32 param03, s32 param04))
+(42, bool resultWorldManageLayoutFlagOff(cQuestProcess * this, s32 flagNo, s32 questId, s32 param03, s32 param04))
+(43, bool resultPlayEndingForFirstSeason(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(44, bool resultAddCyclePurpose(cQuestProcess * this, s32 announceNo, s32 type, s32 param03, s32 param04))
+(45, bool resultRemoveCyclePurpose(cQuestProcess * this, s32 announceNo, s32 param02, s32 param03, s32 param04))
+(46, bool resultUpdateAnnounceDirect(cQuestProcess * this, s32 announceNo, s32 type, s32 param03, s32 param04))
+(47, bool resultSetCheckPoint(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(48, bool resultReturnCheckPoint(cQuestProcess * this, s32 processNo, s32 param02, s32 param03, s32 param04))
+(49, bool resultCallGeneralAnnounce(cQuestProcess * this, s32 type, s32 msgNo, s32 param03, s32 param04))
+(50, bool resultTutorialEnemyInvincibleOff(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(51, bool resultSetDiePlayerReturnPos(cQuestProcess * this, s32 stageNo, s32 startPos, s32 outSceNo, s32 param04))
+(52, bool resultWorldManageQuestFlagOn(cQuestProcess * this, s32 flagNo, s32 questId, s32 param03, s32 param04))
+(53, bool resultWorldManageQuestFlagOff(cQuestProcess * this, s32 flagNo, s32 questId, s32 param03, s32 param04))
+(54, bool resultReturnCheckPointEx(cQuestProcess * this, s32 processNo, s32 param02, s32 param03, s32 param04))
+(55, bool resultResetCheckPoint(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(56, bool resultResetDiePlayerReturnPos(cQuestProcess * this, s32 stageNo, s32 startPos, s32 param03, s32 param04))
+(57, bool resultSetBarricade(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(58, bool resultResetBarricade(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(59, bool resultTutorialEnemyInvincibleOn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(60, bool resultResetTutorialFlag(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(61, bool resultStartContentsTimer(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(62, bool resultMyQstFlagOff(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(63, bool resultPlayCameraEvent(cQuestProcess * this, s32 stageNo, s32 eventNo, s32 param03, s32 param04))
+(64, bool resultEndEndQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(65, bool resultReturnAnnounce(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(66, bool resultAddEndContentsPurpose(cQuestProcess * this, s32 announceNo, s32 type, s32 param03, s32 param04))
+(67, bool resultRemoveEndContentsPurpose(cQuestProcess * this, s32 announceNo, s32 param02, s32 param03, s32 param04))
+(68, bool resultStopCycleTimer(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(69, bool resultRestartCycleTimer(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(70, bool resultAddAreaPoint(cQuestProcess * this, s32 AreaId, s32 AddPoint, s32 param03, s32 param04))
+(71, bool resultLayoutFlagRandomOn(cQuestProcess * this, s32 FlanNo1, s32 FlanNo2, s32 FlanNo3, s32 ResultNo))
+(72, bool resultSetDeliverInfo(cQuestProcess * this, s32 stageNo, s32 npcId, s32 groupSerial, s32 param04))
+(73, bool resultSetDeliverInfoQuest(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 groupSerial))
+(74, bool resultBgmRequestFix(cQuestProcess * this, s32 type, s32 bgmId, s32 param03, s32 param04))
+(75, bool resultEventExecCont(cQuestProcess * this, s32 stageNo, s32 eventNo, s32 jumpStageNo, s32 jumpStartPosNo))
+(76, bool resultPlPadOff(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(77, bool resultPlPadOn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(78, bool resultEnableGetSetQuestList(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(79, bool resultStartMissionAnnounce(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(80, bool resultStageAnnounce(cQuestProcess * this, s32 type, s32 num, s32 param03, s32 param04))
+(81, bool resultReleaseAnnounce(cQuestProcess * this, s32 id, s32 param02, s32 param03, s32 param04))
+(82, bool resultButtonGuideFlagOn(cQuestProcess * this, s32 buttonGuideNo, s32 param02, s32 param03, s32 param04))
+(83, bool resultButtonGuideFlagOff(cQuestProcess * this, s32 buttonGuideNo, s32 param02, s32 param03, s32 param04))
+(84, bool resultAreaJumpFadeContinue(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(85, bool resultExeEventAfterStageJump(cQuestProcess * this, s32 stageNo, s32 eventNo, s32 startPos, s32 param04))
+(86, bool resultExeEventAfterStageJumpContinue(cQuestProcess * this, s32 stageNo, s32 eventNo, s32 startPos, s32 param04))
+(87, bool resultPlayMessage(cQuestProcess * this, s32 groupNo, s32 waitTime, s32 param03, s32 param04))
+(88, bool resultStopMessage(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(89, bool resultDecideDivideArea(cQuestProcess * this, s32 stageNo, s32 startPosNo, s32 param03, s32 param04))
+(90, bool resultShiftPhase(cQuestProcess * this, s32 phaseId, s32 param02, s32 param03, s32 param04))
+(91, bool resultReleaseMyRoom(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(92, bool resultDivideSuccess(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(93, bool resultDivideFailed(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(94, bool resultSetProgressBonus(cQuestProcess * this, s32 rewardRank, s32 param02, s32 param03, s32 param04))
+(95, bool resultRefreshOmKeyDisp(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(96, bool resultSwitchPawnQuestTalk(cQuestProcess * this, s32 type, s32 param02, s32 param03, s32 param04))
+(97, bool resultLinkageEnemyFlagOn(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 flagId))
+(98, bool resultLinkageEnemyFlagOff(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 flagId))
+
+(1, bool checkTalkNpc(cQuestProcess * this, s32 stageNo, s32 npcId, s32 param03, s32 param04))
+(2, bool checkDieEnemy(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(3, bool checkSceHitIn(cQuestProcess * this, s32 stageNo, s32 sceNo, s32 param03, s32 param04))
+(4, bool checkHaveItem(cQuestProcess * this, s32 itemId, s32 itemNum, s32 param03, s32 param04))
+(5, bool checkDeliverItem(cQuestProcess * this, s32 itemId, s32 itemNum, s32 npcId, s32 msgNo))
+(6, bool checkEmDieLight(cQuestProcess * this, s32 enemyId, s32 enemyLv, s32 enemyNum, s32 param04))
+(7, bool checkQstFlagOn(cQuestProcess * this, s32 questId, s32 flagNo, s32 param03, s32 param04))
+(8, bool checkQstFlagOff(cQuestProcess * this, s32 questId, s32 flagNo, s32 param03, s32 param04))
+(9, bool checkMyQstFlagOn(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(10, bool checkMyQstFlagOff(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(11, bool checkPadding00(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(12, bool checkPadding01(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(13, bool checkPadding02(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(14, bool checkStageNo(cQuestProcess * this, s32 stageNo, s32 param02, s32 param03, s32 param04))
+(15, bool checkEventEnd(cQuestProcess * this, s32 stageNo, s32 eventNo, s32 param03, s32 param04))
+(16, bool checkPrt(cQuestProcess * this, s32 stageNo, s32 x, s32 y, s32 z))
+(17, bool checkClearcount(cQuestProcess * this, s32 minCount, s32 maxCount, s32 param03, s32 param04))
+(18, bool checkSceFlagOn(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(19, bool checkSceFlagOff(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(20, bool checkTouchActToNpc(cQuestProcess * this, s32 stageNo, s32 npcId, s32 param03, s32 param04))
+(21, bool checkOrderDecide(cQuestProcess * this, s32 npcId, s32 param02, s32 param03, s32 param04))
+(22, bool checkIsEndCycle(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(23, bool checkIsInterruptCycle(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(24, bool checkIsFailedCycle(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(25, bool checkIsEndResult(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(26, bool checkNpcTalkAndOrderUi(cQuestProcess * this, s32 stageNo, s32 npcId, s32 noOrderGroupSerial, s32 param04))
+(27, bool checkNpcTouchAndOrderUi(cQuestProcess * this, s32 stageNo, s32 npcId, s32 noOrderGroupSerial, s32 param04))
+(28, bool checkStageNoNotEq(cQuestProcess * this, s32 stageNo, s32 param02, s32 param03, s32 param04))
+(29, bool checkWarlevel(cQuestProcess * this, s32 warLevel, s32 param02, s32 param03, s32 param04))
+(30, bool checkTalkNpcWithoutMarker(cQuestProcess * this, s32 stageNo, s32 npcId, s32 param03, s32 param04))
+(31, bool checkHaveMoney(cQuestProcess * this, s32 gold, s32 type, s32 param03, s32 param04))
+(32, bool checkSetQuestClearNum(cQuestProcess * this, s32 clearNum, s32 areaId, s32 param03, s32 param04))
+(33, bool checkMakeCraft(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(34, bool checkPlayEmotion(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(35, bool checkIsEndTimer(cQuestProcess * this, s32 timerNo, s32 param02, s32 param03, s32 param04))
+(36, bool checkIsEnemyFound(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(37, bool checkRandomEq(cQuestProcess * this, s32 randomNo, s32 value, s32 param03, s32 param04))
+(38, bool checkRandomNotEq(cQuestProcess * this, s32 randomNo, s32 value, s32 param03, s32 param04))
+(39, bool checkRandomLess(cQuestProcess * this, s32 randomNo, s32 value, s32 param03, s32 param04))
+(40, bool checkRandomNotGreater(cQuestProcess * this, s32 randomNo, s32 value, s32 param03, s32 param04))
+(41, bool checkRandomGreater(cQuestProcess * this, s32 randomNo, s32 value, s32 param03, s32 param04))
+(42, bool checkRandomNotLess(cQuestProcess * this, s32 randomNo, s32 value, s32 param03, s32 param04))
+(43, bool checkClearcount02(cQuestProcess * this, s32 div, s32 value, s32 param03, s32 param04))
+(44, bool checkIngameTimeRangeEq(cQuestProcess * this, s32 minTime, s32 maxTime, s32 param03, s32 param04))
+(45, bool checkIngameTimeRangeNotEq(cQuestProcess * this, s32 minTime, s32 maxTime, s32 param03, s32 param04))
+(46, bool checkPlHp(cQuestProcess * this, s32 hpRate, s32 type, s32 param03, s32 param04))
+(47, bool checkEmHpNotLess(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 hpRate))
+(48, bool checkEmHpLess(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 hpRate))
+(49, bool checkWeatherEq(cQuestProcess * this, s32 weatherId, s32 param02, s32 param03, s32 param04))
+(50, bool checkWeatherNotEq(cQuestProcess * this, s32 weatherId, s32 param02, s32 param03, s32 param04))
+(51, bool checkPlJobEq(cQuestProcess * this, s32 jobId, s32 param02, s32 param03, s32 param04))
+(52, bool checkPlJobNotEq(cQuestProcess * this, s32 jobId, s32 param02, s32 param03, s32 param04))
+(53, bool checkPlSexEq(cQuestProcess * this, s32 sex, s32 param02, s32 param03, s32 param04))
+(54, bool checkPlSexNotEq(cQuestProcess * this, s32 sex, s32 param02, s32 param03, s32 param04))
+(55, bool checkSceHitOut(cQuestProcess * this, s32 stageNo, s32 sceNo, s32 param03, s32 param04))
+(56, bool checkWaitOrder(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(57, bool checkOmSetTouch(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(58, bool checkOmReleaseTouch(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(59, bool checkJobLevelNotLess(cQuestProcess * this, s32 checkType, s32 level, s32 param03, s32 param04))
+(60, bool checkJobLevelLess(cQuestProcess * this, s32 checkType, s32 level, s32 param03, s32 param04))
+(61, bool checkMyQstFlagOnFromFsm(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(62, bool checkSceHitInWithoutMarker(cQuestProcess * this, s32 stageNo, s32 sceNo, s32 param03, s32 param04))
+(63, bool checkSceHitOutWithoutMarker(cQuestProcess * this, s32 stageNo, s32 sceNo, s32 param03, s32 param04))
+(64, bool checkKeyItemPoint(cQuestProcess * this, s32 idx, s32 num, s32 param03, s32 param04))
+(65, bool checkIsNotEndTimer(cQuestProcess * this, s32 timerNo, s32 param02, s32 param03, s32 param04))
+(66, bool checkIsMainQuestClear(cQuestProcess * this, s32 questId, s32 param02, s32 param03, s32 param04))
+(67, bool checkDogmaOrb(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(68, bool checkIsEnemyFoundForOrder(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(69, bool checkIsTutorialFlagOn(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(70, bool checkQuestOmSetTouch(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(71, bool checkQuestOmReleaseTouch(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(72, bool checkNewTalkNpc(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(73, bool checkNewTalkNpcWithoutMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(74, bool checkIsTutorialQuestClear(cQuestProcess * this, s32 questId, s32 param02, s32 param03, s32 param04))
+(75, bool checkIsMainQuestOrder(cQuestProcess * this, s32 questId, s32 param02, s32 param03, s32 param04))
+(76, bool checkIsTutorialQuestOrder(cQuestProcess * this, s32 questId, s32 param02, s32 param03, s32 param04))
+(77, bool checkIsTouchPawnDungeonOm(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(78, bool checkIsOpenDoorOmQuestSet(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(79, bool checkEmDieForRandomDungeon(cQuestProcess * this, s32 stageNo, s32 enemyId, s32 enemyNum, s32 param04))
+(80, bool checkNpcHpNotLess(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 hpRate))
+(81, bool checkNpcHpLess(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 hpRate))
+(82, bool checkIsEnemyFoundWithoutMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(83, bool checkIsEventBoardAccepted(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(84, bool checkWorldManageQuestFlagOn(cQuestProcess * this, s32 flagNo, s32 questId, s32 param03, s32 param04))
+(85, bool checkWorldManageQuestFlagOff(cQuestProcess * this, s32 flagNo, s32 questId, s32 param03, s32 param04))
+(86, bool checkTouchEventBoard(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(87, bool checkOpenEntryRaidBoss(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(88, bool checkOepnEntryFortDefense(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(89, bool checkDiePlayer(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(90, bool checkPartyNumNotLessWtihoutPawn(cQuestProcess * this, s32 partyMemberNum, s32 param02, s32 param03, s32 param04))
+(91, bool checkPartyNumNotLessWithPawn(cQuestProcess * this, s32 partyMemberNum, s32 param02, s32 param03, s32 param04))
+(92, bool checkLostMainPawn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(93, bool checkSpTalkNpc(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(94, bool checkOepnJobMaster(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(95, bool checkTouchRimStone(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(96, bool checkGetAchievement(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(97, bool checkDummyNotProgress(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(98, bool checkDieRaidBoss(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(99, bool checkCycleTimerZero(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(100, bool checkCycleTimer(cQuestProcess * this, s32 timeSec, s32 param02, s32 param03, s32 param04))
+(101, bool checkQuestNpcTalkAndOrderUi(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(102, bool checkQuestNpcTouchAndOrderUi(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(103, bool checkIsFoundRaidBoss(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 enemyId))
+(104, bool checkQuestOmSetTouchWithoutMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(105, bool checkQuestOmReleaseTouchWithoutMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(106, bool checkTutorialTalkNpc(cQuestProcess * this, s32 stageNo, s32 npcId, s32 param03, s32 param04))
+(107, bool checkIsLogin(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(108, bool checkIsPlayEndFirstSeasonEndCredit(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(109, bool checkIsKilledTargetEnemySetGroup(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(110, bool checkIsKilledTargetEmSetGrpNoMarker(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(111, bool checkIsLeftCycleTimer(cQuestProcess * this, s32 timeSec, s32 param02, s32 param03, s32 param04))
+(112, bool checkOmEndText(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(113, bool checkQuestOmEndText(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(114, bool checkOpenAreaMaster(cQuestProcess * this, s32 areaId, s32 param02, s32 param03, s32 param04))
+(115, bool checkHaveItemAllBag(cQuestProcess * this, s32 itemId, s32 itemNum, s32 param03, s32 param04))
+(116, bool checkOpenNewspaper(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(117, bool checkOpenQuestBoard(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(118, bool checkStageNoWithoutMarker(cQuestProcess * this, s32 stageNo, s32 param02, s32 param03, s32 param04))
+(119, bool checkTalkQuestNpcUnitMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(120, bool checkTouchQuestNpcUnitMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(121, bool checkIsExistSecondPawn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(122, bool checkIsOrderJobTutorialQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(123, bool checkIsOpenWarehouse(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(124, bool checkIsMyquestLayoutFlagOn(cQuestProcess * this, s32 FlagNo, s32 param02, s32 param03, s32 param04))
+(125, bool checkIsMyquestLayoutFlagOff(cQuestProcess * this, s32 FlagNo, s32 param02, s32 param03, s32 param04))
+(126, bool checkIsOpenWarehouseReward(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(127, bool checkIsOrderLightQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(128, bool checkIsOrderWorldQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(129, bool checkIsLostMainPawn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(130, bool checkIsFullOrderQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(131, bool checkIsBadStatus(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(132, bool checkCheckAreaRank(cQuestProcess * this, s32 AreaId, s32 AreaRank, s32 param03, s32 param04))
+(133, bool checkPadding133(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(134, bool checkEnablePartyWarp(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(135, bool checkIsHugeble(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(136, bool checkIsDownEnemy(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(137, bool checkOpenAreaMasterSupplies(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(138, bool checkOpenEntryBoard(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(139, bool checkNoticeInterruptContents(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(140, bool checkOpenRetrySelect(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(141, bool checkIsPlWeakening(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(142, bool checkNoticePartyInvite(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(143, bool checkIsKilledAreaBoss(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(144, bool checkIsPartyReward(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(145, bool checkIsFullBag(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(146, bool checkOpenCraftExam(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(147, bool checkLevelUpCraft(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(148, bool checkIsClearLightQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(149, bool checkOpenJobMasterReward(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(150, bool checkTouchActQuestNpc(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(151, bool checkIsLeaderAndJoinPawn(cQuestProcess * this, s32 pawnNum, s32 param02, s32 param03, s32 param04))
+(152, bool checkIsAcceptLightQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(153, bool checkIsReleaseWarpPoint(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(154, bool checkIsSetPlayerSkill(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(155, bool checkIsOrderMyQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(156, bool checkIsNotOrderMyQuest(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(157, bool checkHasMypawn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(158, bool checkIsFavoriteWarpPoint(cQuestProcess * this, s32 warpPointId, s32 param02, s32 param03, s32 param04))
+(159, bool checkCraft(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(160, bool checkIsKilledTargetEnemySetGroupGmMain(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(161, bool checkIsKilledTargetEnemySetGroupGmSub(cQuestProcess * this, s32 flagNo, s32 param02, s32 param03, s32 param04))
+(162, bool checkHasUsedKey(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(163, bool checkIsCycleFlagOffPeriod(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(164, bool checkIsEnemyFoundGmMain(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(165, bool checkIsEnemyFoundGmSub(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(166, bool checkIsLoginBugFixedOnly(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(167, bool checkIsSearchClan(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(168, bool checkIsOpenAreaListUi(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(169, bool checkIsReleaseWarpPointAnyone(cQuestProcess * this, s32 warpPointId, s32 param02, s32 param03, s32 param04))
+(170, bool checkDevidePlayer(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(171, bool checkNowPhase(cQuestProcess * this, s32 phaseId, s32 param02, s32 param03, s32 param04))
+(172, bool checkIsReleasePortal(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(173, bool checkIsGetAppraiseItem(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(174, bool checkIsSetPartnerPawn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(175, bool checkIsPresentPartnerPawn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(176, bool checkIsReleaseMyRoom(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(177, bool checkIsExistDividePlayer(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(178, bool checkNotDividePlayer(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(179, bool checkIsGatherPartyInStage(cQuestProcess * this, s32 stageNo, s32 param02, s32 param03, s32 param04))
+(180, bool checkIsFinishedEnemyDivideAction(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(181, bool checkIsOpenDoorOmQuestSetNoMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 questId))
+(182, bool checkIsFinishedEventOrderNum(cQuestProcess * this, s32 stageNo, s32 eventNo, s32 param03, s32 param04))
+(183, bool checkIsPresentPartnerPawnNoMarker(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(184, bool checkIsOmBrokenLayout(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(185, bool checkIsOmBrokenQuest(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(186, bool checkIsHoldingPeriodCycleContents(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(187, bool checkIsNotHoldingPeriodCycleContents(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(188, bool checkIsResetInstanceArea(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(189, bool checkCheckMoonAge(cQuestProcess * this, s32 moonAgeStart, s32 moonAgeEnd, s32 param03, s32 param04))
+(190, bool checkIsOrderPawnQuest(cQuestProcess * this, s32 orderGroupSerial, s32 noOrderGroupSerial, s32 param03, s32 param04))
+(191, bool checkIsTakePictures(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(192, bool checkIsStageForMainQuest(cQuestProcess * this, s32 stageNo, s32 param02, s32 param03, s32 param04))
+(193, bool checkIsReleasePawnExpedition(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(194, bool checkOpenPpMode(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(195, bool checkPpNotLess(cQuestProcess * this, s32 point, s32 param02, s32 param03, s32 param04))
+(196, bool checkOpenPpShop(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(197, bool checkTouchClanBoard(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(198, bool checkIsOneOffGather(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(199, bool checkIsOmBrokenLayoutNoMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(200, bool checkIsOmBrokenQuestNoMarker(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 param04))
+(201, bool checkKeyItemPointEq(cQuestProcess * this, s32 idx, s32 num, s32 param03, s32 param04))
+(202, bool checkIsEmotion(cQuestProcess * this, s32 actNo, s32 param02, s32 param03, s32 param04))
+(203, bool checkIsEquipColor(cQuestProcess * this, s32 color, s32 param02, s32 param03, s32 param04))
+(204, bool checkIsEquip(cQuestProcess * this, s32 itemId, s32 param02, s32 param03, s32 param04))
+(205, bool checkIsTakePicturesNpc(cQuestProcess * this, s32 stageNo, s32 npcId01, s32 npcId02, s32 npcId03))
+(206, bool checkSayMessage(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+(207, bool checkIsTakePicturesWithoutPawn(cQuestProcess * this, s32 stageNo, s32 x, s32 y, s32 z))
+(208, bool checkIsLinkageEnemyFlag(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 flagNo))
+(209, bool checkIsLinkageEnemyFlagOff(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 flagNo))
+(210, bool checkIsReleaseSecretRoom(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
+
   COMMAND_CHECK_END = 0xD3,
   COMMAND_CHECK_NUM = 0xD2,
-};
-*/
+  */

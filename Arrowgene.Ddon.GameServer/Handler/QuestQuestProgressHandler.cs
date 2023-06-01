@@ -43,11 +43,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new CDataQuestProcessState()
                     {
                         ProcessNo = packet.Structure.ProcessNo,
+                        CheckCommandList = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>()
+                        {
+                            new CDataQuestProcessState.MtTypedArrayCDataQuestCommand()
+                            {
+                                ResultCommandList = new List<CDataQuestCommand>()
+                                {
+                                    new CDataQuestCommand()
+                                    {
+                                        Command = 109,
+                                        Param01 = 2242
+                                    }
+                                }
+                            }
+                        },
                         ResultCommandList = new List<CDataQuestCommand>()
                         {
                             new CDataQuestCommand()
                             {
-                                Command = 4
+                                Command = 4,
+                                Param01 = 6
                             }
                         }
                     }
@@ -56,9 +71,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // Sent for the rest of the party members
                 S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc();
-                ntc.ProgressCharacterId = packet.Structure.ProgressCharacterId; // client.Character.CharacterId?
+                ntc.ProgressCharacterId = packet.Structure.ProgressCharacterId;
                 ntc.QuestScheduleId = res.QuestScheduleId;
-                ntc.QuestProcessStateList = res.QuestProcessStateList; // Either this or the full list from the pcap
+                ntc.QuestProcessStateList = res.QuestProcessStateList;
                 client.Party.SendToAllExcept(ntc, client);
             } else {
                 IBuffer inBuffer = new StreamBuffer(packet.Data);
