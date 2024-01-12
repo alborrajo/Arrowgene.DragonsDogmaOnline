@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -20,11 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0, Endianness.Big);
-            buffer.WriteInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            client.Send(new Packet(PacketId.S2C_QUEST_GET_WORLD_MANAGE_QUEST_LIST_RES, buffer.GetAllBytes()));
+            client.Send(new S2CQuestGetWorldManageQuestListRes());
             //client.Send(GameFull.Dump_121);
         }
     }

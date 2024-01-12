@@ -199,6 +199,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataWarpPoint.Serializer());
             Create(new CDataWeatherLoop.Serializer());
             Create(new CDataWeatherSchedule.Serializer());
+            Create(new CDataWorldManageQuestList.Serializer());
             Create(new CDataWorldManageQuestOrderList.Serializer());
             Create(new CDataStageLayoutId.Serializer());
             Create(new UnkownCharacterData0Serializer());
@@ -557,6 +558,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetMainQuestListRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CQuestGetSetQuestListRes.Serializer());
+            Create(new S2CQuestGetWorldManageQuestListNtc.Serializer());
+            Create(new S2CQuestGetWorldManageQuestListRes.Serializer());
             Create(new S2CQuestJoinLobbyQuestInfoNtc.Serializer());
             Create(new S2CQuestPartyQuestProgressNtc.Serializer());
             Create(new S2CQuestQuestOrderRes.Serializer());
