@@ -22,10 +22,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            // Not sending this blocks paths
-            EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
-            S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(GameFull.data_Dump_142);
-            client.Send(pcap);
+            S2CQuestGetPartyQuestProgressInfoRes res = new S2CQuestGetPartyQuestProgressInfoRes();
+            client.Send(res);
+
+            // Not sending this blocks paths for non-party leaders
+            //client.Send(GameFull.Dump_142);
         }
     }
 }

@@ -34,47 +34,88 @@ namespace Arrowgene.Ddon.GameServer.Handler
             //var pcapRumi8 = enemySetEntitySerializer.Read(new byte [] {0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x02 ,0x47 ,0x00 ,0x00 ,0x00 ,0x00 ,0x03 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00});
             //var pcapRumi9 = entitySerializer.Read(new byte [] {0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x04 ,0x62 ,0x76 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x10 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x0E ,0x00 ,0x00 ,0x04 ,0x4F ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x0C ,0x00 ,0x00 ,0x04 ,0x4F ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x6B ,0x00 ,0x01 ,0x00 ,0x00 ,0x02 ,0x59 ,0x01 ,0x00 ,0x00 ,0x00 ,0x00});
             //var pcapRumi10 = entitySerializer.Read(new byte [] {0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x04 ,0x62 ,0x76 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x0F ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x0F ,0x00 ,0x00 ,0x04 ,0x4F ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x02 ,0x00 ,0x56 ,0x00 ,0x00 ,0x04 ,0x4F ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x01 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x2F ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00});
-            if(packet.Structure.KeyId == 53 && packet.Structure.QuestScheduleId == 384953) {
+            if(packet.Structure.QuestScheduleId == 384953) {
                 // Knights Bitter Enemy
-                S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
-                res.QuestScheduleId = packet.Structure.QuestScheduleId;
-                res.QuestProcessStateList = new List<CDataQuestProcessState>()
+                if(packet.Structure.ProcessNo == 0)
                 {
-                    new CDataQuestProcessState()
+                    S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes()
                     {
-                        ProcessNo = packet.Structure.ProcessNo,
-                        CheckCommandList = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>()
+                        QuestScheduleId = packet.Structure.QuestScheduleId,
+                        QuestProcessStateList = new List<CDataQuestProcessState>()
                         {
-                            new CDataQuestProcessState.MtTypedArrayCDataQuestCommand()
+                            new CDataQuestProcessState()
                             {
+                                ProcessNo = 1,
+                                CheckCommandList = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>()
+                                {
+                                    new CDataQuestProcessState.MtTypedArrayCDataQuestCommand()
+                                    {
+                                        ResultCommandList = new List<CDataQuestCommand>()
+                                        {
+                                            new CDataQuestCommand()
+                                            {
+                                                Command = 2,
+                                                Param01 = 100,
+                                                Param02 = 26,
+                                                Param03 = 0
+                                            }
+                                        }
+                                    }
+                                },
                                 ResultCommandList = new List<CDataQuestCommand>()
                                 {
                                     new CDataQuestCommand()
                                     {
-                                        Command = 109,
-                                        Param01 = 2242
+                                        Command = 4,
+                                        Param01 = 6
                                     }
                                 }
                             }
-                        },
-                        ResultCommandList = new List<CDataQuestCommand>()
+                        }
+                    };
+                    client.Send(res);
+
+                    // Sent for the rest of the party members
+                    S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc();
+                    ntc.ProgressCharacterId = packet.Structure.ProgressCharacterId;
+                    ntc.QuestScheduleId = res.QuestScheduleId;
+                    ntc.QuestProcessStateList = res.QuestProcessStateList;
+                    client.Party.SendToAllExcept(ntc, client);
+                }
+                else if(packet.Structure.ProcessNo == 1) 
+                {
+                    S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes()
+                    {
+                        QuestScheduleId = packet.Structure.QuestScheduleId,
+                        QuestProcessStateList = new List<CDataQuestProcessState>()
                         {
-                            new CDataQuestCommand()
+                            new CDataQuestProcessState()
                             {
-                                Command = 4,
-                                Param01 = 6
+                                ProcessNo = 2,
+                                ResultCommandList = new List<CDataQuestCommand>()
+                                {
+                                    new CDataQuestCommand()
+                                    {
+                                        Command = 4,
+                                        Param01 = 8
+                                    },
+                                    new CDataQuestCommand()
+                                    {
+                                        Command = 64,
+                                    }
+                                }
                             }
                         }
-                    }
-                };
-                client.Send(res);
+                    };
+                    client.Send(res);
 
-                // Sent for the rest of the party members
-                S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc();
-                ntc.ProgressCharacterId = packet.Structure.ProgressCharacterId;
-                ntc.QuestScheduleId = res.QuestScheduleId;
-                ntc.QuestProcessStateList = res.QuestProcessStateList;
-                client.Party.SendToAllExcept(ntc, client);
+                    // Sent for the rest of the party members
+                    S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc();
+                    ntc.ProgressCharacterId = packet.Structure.ProgressCharacterId;
+                    ntc.QuestScheduleId = res.QuestScheduleId;
+                    ntc.QuestProcessStateList = res.QuestProcessStateList;
+                    client.Party.SendToAllExcept(ntc, client);
+                }
             } else {
                 IBuffer inBuffer = new StreamBuffer(packet.Data);
                 inBuffer.SetPositionStart();
