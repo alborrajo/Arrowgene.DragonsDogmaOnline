@@ -22,15 +22,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(new S2CQuestJoinLobbyQuestInfoNtc());
-            
-            //S2CQuestJoinLobbyQuestInfoNtc pcap = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>().Read(InGameDump.data_Dump_20A);
-            //client.Send(pcap);
-
-            // Minimal reproduction of unlocking Dana gate, but blocks other stuff (Accepting personal quests)
-            //S2CQuestJoinLobbyQuestInfoNtc ntc = new S2CQuestJoinLobbyQuestInfoNtc();
-            //ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList;
-            //client.Send(ntc);
+            S2CQuestJoinLobbyQuestInfoNtc pcap = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>().Read(InGameDump.data_Dump_20A);
+            S2CQuestJoinLobbyQuestInfoNtc ntc = new S2CQuestJoinLobbyQuestInfoNtc();
+            ntc.QuestDefine = pcap.QuestDefine;
+            client.Send(ntc);
             
             IBuffer buffer = new StreamBuffer();
             buffer.WriteInt32(0, Endianness.Big);
