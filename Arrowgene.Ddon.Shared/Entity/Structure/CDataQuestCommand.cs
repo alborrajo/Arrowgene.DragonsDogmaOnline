@@ -9,6 +9,38 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public int Param02 { get; set; }
         public int Param03 { get; set; }
         public int Param04 { get; set; }
+
+        public CDataQuestCommand() {}
+        public CDataQuestCommand(ushort command)
+        {
+            Command = command;
+        }
+        public CDataQuestCommand(ushort command, int param01)
+        {
+            Command = command;
+            Param01 = param01;
+        }
+        public CDataQuestCommand(ushort command, int param01, int param02)
+        {
+            Command = command;
+            Param01 = param01;
+            Param02 = param02;
+        }
+        public CDataQuestCommand(ushort command, int param01, int param02, int param03)
+        {
+            Command = command;
+            Param01 = param01;
+            Param02 = param02;
+            Param03 = param03;
+        }
+        public CDataQuestCommand(ushort command, int param01, int param02, int param03, int param04)
+        {
+            Command = command;
+            Param01 = param01;
+            Param02 = param02;
+            Param03 = param03;
+            Param04 = param04;
+        }
     
         public class Serializer : EntitySerializer<CDataQuestCommand>
         {
@@ -32,6 +64,24 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 return obj;
             }
         }
+
+        public enum AnnounceType : int
+        {
+            QUEST_ANNOUNCE_TYPE_ACCEPT = 0x0,
+            QUEST_ANNOUNCE_TYPE_CLEAR = 0x1,
+            QUEST_ANNOUNCE_TYPE_FAILED = 0x2,
+            QUEST_ANNOUNCE_TYPE_UPDATE = 0x3,
+            QUEST_ANNOUNCE_TYPE_DISCOVERED = 0x4,
+            QUEST_ANNOUNCE_TYPE_CAUTION = 0x5,
+            QUEST_ANNOUNCE_TYPE_START = 0x6,
+            QUEST_ANNOUNCE_TYPE_EX_UPDATE = 0x7,
+            QUEST_ANNOUNCE_TYPE_END = 0x8,
+            QUEST_ANNOUNCE_TYPE_STAGE_START = 0x9,
+            QUEST_ANNOUNCE_TYPE_STAGE_CLEAR = 0xA,
+            QUEST_ANNOUNCE_TYPE_CANCEL = 0xB,
+        }
+
+        public static CDataQuestCommand ResultSetAnnounce(AnnounceType announceType) => new CDataQuestCommand(4, (int) announceType);
     }
 }
 
@@ -349,6 +399,4 @@ From the PS4 build:
 (209, bool checkIsLinkageEnemyFlagOff(cQuestProcess * this, s32 stageNo, s32 groupNo, s32 setNo, s32 flagNo))
 (210, bool checkIsReleaseSecretRoom(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
 
-  COMMAND_CHECK_END = 0xD3,
-  COMMAND_CHECK_NUM = 0xD2,
   */

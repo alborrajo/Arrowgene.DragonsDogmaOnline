@@ -1,5 +1,4 @@
 using System.Linq;
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -25,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Only Knight's Bitter Enemy
             pcap.SetQuestList = pcap.SetQuestList
                 .Where(setQuest => setQuest.Param.QuestId == 20005010)
-                .ToList(); 
+                .ToList();
             client.Send(pcap);
         }
     }
