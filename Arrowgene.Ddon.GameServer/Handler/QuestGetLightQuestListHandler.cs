@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -17,7 +18,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SQuestGetLightQuestListReq> packet)
         {
             S2CQuestGetLightQuestListRes pcap = EntitySerializer.Get<S2CQuestGetLightQuestListRes>().Read(pcap_data);
-            client.Send(pcap);
+            
+            S2CQuestGetLightQuestListRes res = new S2CQuestGetLightQuestListRes();
+
+            // Spirit Dragon EM
+            res.LightQuestList.Add(new CDataLightQuestList()
+            {
+                Param = new CDataQuestList()
+                {
+                    QuestScheduleId = 50300010,
+                    QuestId = 50300010
+                }
+            });
+
+            // A Personal Request
+            res.LightQuestList.Add(new CDataLightQuestList()
+            {
+                Param = new CDataQuestList()
+                {
+                    QuestScheduleId = 40000035,
+                    QuestId = 40000035
+                }
+            });
+
+            client.Send(res);
         }
 
         private static readonly byte[] pcap_data = new byte[] {

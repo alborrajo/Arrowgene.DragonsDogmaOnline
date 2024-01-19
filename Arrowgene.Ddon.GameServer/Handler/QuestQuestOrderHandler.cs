@@ -20,7 +20,56 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestQuestOrderReq> packet)
         {
-            client.Send(new S2CQuestQuestOrderRes());
+            var res = new S2CQuestQuestOrderRes();
+
+            switch(packet.Structure.QuestScheduleId)
+            {
+                case 40000035:
+                    // A Personal Request
+                    res.QuestProcessStateList.Add(new CDataQuestProcessState()
+                    {
+                        CheckCommandList = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>()
+                        {
+                            new CDataQuestProcessState.MtTypedArrayCDataQuestCommand()
+                            {
+                                ResultCommandList = new List<CDataQuestCommand>()
+                                {
+                                    new CDataQuestCommand(5,  13805, 1, -1, -1)
+                                }
+                            }
+                        },
+                        ResultCommandList = new List<CDataQuestCommand>()
+                        {
+                            CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_ACCEPT)
+                        }
+                    });
+                    break;
+
+                case 50300010:
+                    // Spirit Dragon EM as a Light Quest, yes
+                    res.QuestProcessStateList.Add(new CDataQuestProcessState()
+                    {
+                        CheckCommandList = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>()
+                        {
+                            new CDataQuestProcessState.MtTypedArrayCDataQuestCommand()
+                            {
+                                ResultCommandList = new List<CDataQuestCommand>()
+                                {
+                                    new CDataQuestCommand(2, 436, 1, 0)
+                                }
+                            }
+                        },
+                        ResultCommandList = new List<CDataQuestCommand>()
+                        {
+                            CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_START),
+                            new CDataQuestCommand(12, 436, 0), // resultStageJump
+                            new CDataQuestCommand(85, 436, 0) // resultExeEventAfterStageJump
+                        }
+                    });
+                    break;
+            }
+
+            client.Send(res);
         }
     }
 }

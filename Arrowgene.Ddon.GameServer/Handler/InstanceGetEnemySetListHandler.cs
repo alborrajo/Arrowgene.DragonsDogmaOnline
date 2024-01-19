@@ -43,9 +43,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 response.EnemyList.Add(enemy);
             }
 
-            // Knight's Bitter Enemy
             if(response.LayoutId.GroupId == 26) {
+                // Knight's Bitter Enemy
                 response.QuestId = 20005010;
+            } else if(response.LayoutId.GroupId == 2) {
+                // Spirit Dragon
+                response.QuestId = 50300010;
             }
 
             client.Send(response);
