@@ -7,8 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Type { get; set; }
         public int Param01 { get; set; }
         public int Param02 { get; set; }
-        public int Param03 { get; set; }
-        public int Param04 { get; set; }
+        public int Param03 { get; set; } // Enemy Level?
+        public int Param04 { get; set; } // Enemy Amount?
         public ushort Unk0 { get; set; }
         public ushort Unk1 { get; set; }
     
