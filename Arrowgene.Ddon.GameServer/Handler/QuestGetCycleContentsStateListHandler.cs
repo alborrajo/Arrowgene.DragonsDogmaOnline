@@ -24,7 +24,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CQuestJoinLobbyQuestInfoNtc pcap = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>().Read(InGameDump.data_Dump_20A);
             S2CQuestJoinLobbyQuestInfoNtc ntc = new S2CQuestJoinLobbyQuestInfoNtc();
-            ntc.QuestDefine = pcap.QuestDefine;
+            ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
+            ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
             client.Send(ntc);
             
             IBuffer buffer = new StreamBuffer();
