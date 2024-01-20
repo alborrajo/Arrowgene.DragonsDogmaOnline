@@ -1,4 +1,4 @@
-#StageId,LayerNo,GroupId,SubGroupId,EnemyId,NamedEnemyParamsId,RaidBossId,Scale,Lv,HmPresetNo,StartThinkTblNo,RepopNum,RepopCount,EnemyTargetTypesId,MontageFixNo,SetType,InfectionType,IsBossGauge,IsBossBGM,IsManualSet,IsAreaBoss,IsBloodEnemy,Unk0
+#StageId,LayerNo,GroupId,SubGroupId,EnemyId,NamedEnemyParamsId,RaidBossId,Scale,Lv,HmPresetNo,StartThinkTblNo,RepopNum,RepopCount,EnemyTargetTypesId,MontageFixNo,SetType,InfectionType,IsBossGauge,IsBossBGM,IsManualSet,IsAreaBoss,IsBloodEnemy,IsHighOrbEnemy
 1,0,0,0,0x010100,0x8FA,0,100,1,0,0,0,0,1,0,0,0,False,False,False,False,False,False
 1,0,0,0,0x010101,0x8FA,0,100,1,0,0,0,0,1,0,0,0,False,False,False,False,False,False
 1,0,0,0,0x010100,0x8FA,0,100,1,0,0,0,0,1,0,0,0,False,False,False,False,False,False
@@ -7747,3 +7747,11 @@
 408,0,8,0,0x010161,0x8FA,0,100,65,0,0,0,0,1,0,0,0,False,False,False,False,False,False
 408,0,8,0,0x010161,0x8FA,0,100,65,0,0,0,0,1,0,0,2,False,False,False,False,False,False
 408,0,14,0,0x010150,0x8FA,0,100,65,0,0,0,0,1,0,0,0,False,False,False,False,False,False
+381,0,2,0,0x022000,0x8FA,0,100,80,0,0,0,0,4,0,0,0,True,True,False,True,False,False
+381,0,2,0,0x030104,0x8FA,0,100,80,0,0,0,1,1,0,0,0,False,False,True,False,False,False
+381,0,2,0,0x030104,0x8FA,0,100,80,0,0,0,1,1,0,0,0,False,False,True,False,False,False
+381,0,2,0,0x030104,0x8FA,0,100,80,0,0,0,1,1,0,0,0,False,False,True,False,False,False
+381,0,2,0,0x030104,0x8FA,0,100,80,0,0,0,1,1,0,0,0,False,False,True,False,False,False
+381,0,2,0,0x030105,0x8FA,0,100,80,0,0,0,1,1,0,0,0,False,False,True,False,False,False
+381,0,2,0,0x030105,0x8FA,0,100,80,0,0,0,1,1,0,0,0,False,False,True,False,False,False
+381,0,2,0,0x030105,0x8FA,0,100,80,0,0,0,1,1,0,0,0,False,False,True,False,False,False

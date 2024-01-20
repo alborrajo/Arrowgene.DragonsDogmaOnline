@@ -55,13 +55,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             {
                                 ResultCommandList = new List<CDataQuestCommand>()
                                 {
-                                    new CDataQuestCommand(2, 436, 1, 0)
+                                    new CDataQuestCommand(48,  436, 2, 0, 60)
                                 }
                             }
                         },
                         ResultCommandList = new List<CDataQuestCommand>()
                         {
-                            CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_START),
+                            CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_ACCEPT),
                             new CDataQuestCommand(12, 436, 0), // resultStageJump
                             new CDataQuestCommand(85, 436, 0) // resultExeEventAfterStageJump
                         }
