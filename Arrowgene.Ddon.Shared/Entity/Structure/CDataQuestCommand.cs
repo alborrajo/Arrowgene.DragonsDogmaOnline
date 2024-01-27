@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             QUEST_ANNOUNCE_TYPE_CANCEL = 0xB,
         }
 
-        public static CDataQuestCommand ResultSetAnnounce(AnnounceType announceType) => new CDataQuestCommand(4, (int) announceType);
+        public static CDataQuestCommand ResultSetAnnounce(AnnounceType announceType, bool isDiscovered = false) => new CDataQuestCommand(4, (int) announceType, isDiscovered ? 1 : 0);
     }
 }
 
@@ -92,7 +92,7 @@ From the PS4 build:
 (1, bool resultLotOn(cQuestProcess * this, s32 stageNo, s32 lotNo, s32 param03, s32 param04))
 (2, bool resultLotOff(cQuestProcess * this, s32 stageNo, s32 lotNo, s32 param03, s32 param04))
 (3, bool resultHandItem(cQuestProcess * this, s32 itemId, s32 itemNum, s32 param03, s32 param04))
-(4, bool resultSetAnnounce(cQuestProcess * this, s32 announceType, s32 param02, s32 param03, s32 param04))
+(4, bool resultSetAnnounce(cQuestProcess * this, s32 announceType, s32 isDiscovered, s32 param03, s32 param04))
 (5, bool resultUpdateAnnounce(cQuestProcess * this, s32 type, s32 param02, s32 param03, s32 param04))
 (6, bool resultChangeMessage(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))
 (7, bool resultQstFlagOn(cQuestProcess * this, s32 param01, s32 param02, s32 param03, s32 param04))

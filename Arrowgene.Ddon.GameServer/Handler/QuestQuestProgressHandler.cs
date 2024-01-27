@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                     },
                                     ResultCommandList = new List<CDataQuestCommand>()
                                     {
-                                        CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_START),
+                                        CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_ACCEPT, true),
                                     }
                                 }
                             };
@@ -68,10 +68,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             {
                                 new CDataQuestProcessState()
                                 {
-                                    ProcessNo = 2,
                                     ResultCommandList = new List<CDataQuestCommand>()
                                     {
-                                        CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_END)
+                                        CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_CLEAR),
                                     }
                                 }
                             };
