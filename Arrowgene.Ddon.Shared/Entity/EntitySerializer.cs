@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataAchieveCategoryStatus.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
             Create(new CDataAllPlayerContext.Serializer());
+            Create(new CDataAreaBaseInfo.Serializer());
             Create(new CDataAreaRank.Serializer());
             Create(new CDataArisenProfileSerializer());
             Create(new CDataCharacterEquipDataSerializer());
@@ -210,6 +211,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LGetErrorMessageListReq.Serializer());
             Create(new C2LLoginReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
+            Create(new C2SAreaGetAreaBaseInfoListReq.Serializer());
 
             Create(new C2SCharacterCharacterGoldenReviveReq.Serializer());
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
@@ -392,6 +394,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CNextConnectionServerNtc.Serializer());
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
+            Create(new S2CAreaGetAreaBaseInfoListRes.Serializer());
+            
             Create(new S2CEquipChangeCharacterEquipLobbyNtc.Serializer());
 
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
