@@ -5,7 +5,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarGetExhibitPossibleNumHandler : GameStructurePacketHandler<C2SBazaarGetExhibitPossibleNumReq>
+    public class BazaarGetExhibitPossibleNumHandler : GameRequestPacketHandler<C2SBazaarGetExhibitPossibleNumReq, S2CBazaarGetExhibitPossibleNumRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarGetExhibitPossibleNumHandler));
         
@@ -13,9 +13,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetExhibitPossibleNumReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetExhibitPossibleNumReq> request, S2CBazaarGetExhibitPossibleNumRes response)
         {
-            client.Send(new S2CBazaarGetExhibitPossibleNumRes());
+            // TODO: set response.Num and response.Add
         }
     }
 }

@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdateCharacterEditParamExHandler : GameStructurePacketHandler<C2SCharacterEditUpdateCharacterEditParamExReq>
+    public class CharacterEditUpdateCharacterEditParamExHandler : GameRequestPacketHandler<C2SCharacterEditUpdateCharacterEditParamExReq, S2CCharacterEditUpdateCharacterEditParamExRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdateCharacterEditParamExHandler));
         
@@ -14,18 +14,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamExReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamExReq> request, S2CCharacterEditUpdateCharacterEditParamExRes response)
         {
             // TODO: Substract GG
-            client.Character.EditInfo = packet.Structure.EditInfo;
+            client.Character.EditInfo = request.Structure.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);
             
-            if(packet.Structure.FirstName.Length > 0) {
-                client.Character.FirstName = packet.Structure.FirstName;
+            if(request.Structure.FirstName.Length > 0) {
+                client.Character.FirstName = request.Structure.FirstName;
                 Server.Database.UpdateCharacterBaseInfo(client.Character);
             }
 
-            client.Send(new S2CCharacterEditUpdateCharacterEditParamExRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamExNtc() {
                     CharacterId = client.Character.CharacterId,

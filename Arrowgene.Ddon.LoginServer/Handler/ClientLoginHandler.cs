@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientLoginHandler : LoginStructurePacketHandler<C2LLoginReq>
+    public class ClientLoginHandler : LoginRequestPacketHandler<C2LLoginReq, L2CLoginRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLoginHandler));
 
@@ -23,23 +24,20 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             _tokensInFlight = new HashSet<string>();
         }
 
-        public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
+        public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> request, L2CLoginRes response)
         {
             DateTime now = DateTime.UtcNow;
             client.SetChallengeCompleted(true);
 
-            string oneTimeToken = packet.Structure.OneTimeToken;
-            Logger.Debug(client, $"Received LoginToken:{oneTimeToken} for platform:{packet.Structure.PlatformType}");
+            string oneTimeToken = request.Structure.OneTimeToken;
+            Logger.Debug(client, $"Received LoginToken:{oneTimeToken} for platform:{request.Structure.PlatformType}");
 
-            L2CLoginRes res = new L2CLoginRes();
-            res.OneTimeToken = oneTimeToken;
+            response.OneTimeToken = oneTimeToken;
 
             if (!LockToken(oneTimeToken))
             {
                 Logger.Error(client, $"OneTimeToken {oneTimeToken} is in process.");
-                res.Error = 1;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException();
             }
 
             try
@@ -50,9 +48,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     if (account == null)
                     {
                         Logger.Error(client, "Invalid OneTimeToken");
-                        res.Error = 1;
-                        client.Send(res);
-                        return;
+                        throw new ResponseErrorException();
                     }
                 }
                 else
@@ -69,9 +65,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             {
                                 Logger.Error(client,
                                     "Could not create account from OneTimeToken, choose another token");
-                                res.Error = 2;
-                                client.Send(res);
-                                return;
+                                throw new ResponseErrorException();
                             }
 
                             Logger.Info(client, "Created new account from OneTimeToken");
@@ -85,18 +79,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 if (!account.LoginTokenCreated.HasValue)
                 {
                     Logger.Error(client, "No login token exists");
-                    res.Error = 2;
-                    client.Send(res);
-                    return;
+                    throw new ResponseErrorException();
                 }
 
                 TimeSpan loginTokenAge = account.LoginTokenCreated.Value - now;
                 if (loginTokenAge > TimeSpan.FromDays(7)) // TODO convert to setting
                 {
                     Logger.Error(client, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
-                    res.Error = 1;
-                    client.Send(res);
-                    return;
+                    throw new ResponseErrorException();
                 }
 
                 List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
@@ -104,9 +94,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 {
                     // todo check connection age?
                     Logger.Error(client, $"Already logged in");
-                    res.Error = 1;
-                    client.Send(res);
-                    return;
+                    throw new ResponseErrorException();
                 }
                 
                 // Order Important,
@@ -123,9 +111,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 if (!Database.InsertConnection(connection))
                 {
                     Logger.Error(client, $"Failed to register login connection");
-                    res.Error = 1;
-                    client.Send(res);
-                    return;
+                    throw new ResponseErrorException();
                 }
 
                 client.Account.LastAuthentication = now;
@@ -133,7 +119,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Database.UpdateAccount(client.Account);
 
                 Logger.Info(client, "Logged In");
-                client.Send(res);
             }
             finally
             {

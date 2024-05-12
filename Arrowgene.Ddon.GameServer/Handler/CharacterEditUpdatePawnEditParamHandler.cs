@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdatePawnEditParamHandler : GameStructurePacketHandler<C2SCharacterEditUpdatePawnEditParamReq>
+    public class CharacterEditUpdatePawnEditParamHandler : GameRequestPacketHandler<C2SCharacterEditUpdatePawnEditParamReq, S2CCharacterEditUpdatePawnEditParamRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdatePawnEditParamHandler));
 
@@ -15,13 +15,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdatePawnEditParamReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdatePawnEditParamReq> request, S2CCharacterEditUpdatePawnEditParamRes response)
         {
             // TODO: Substract GG/Tickets
-            Pawn pawn = client.Character.PawnBySlotNo(packet.Structure.SlotNo);
-            pawn.EditInfo = packet.Structure.EditInfo;
+            Pawn pawn = client.Character.PawnBySlotNo(request.Structure.SlotNo);
+            pawn.EditInfo = request.Structure.EditInfo;
             Server.Database.UpdateEditInfo(pawn);
-            client.Send(new S2CCharacterEditUpdatePawnEditParamRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamNtc() {
                     CharacterId = pawn.CharacterId,

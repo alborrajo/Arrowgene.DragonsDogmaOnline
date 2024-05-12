@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterGetReviveChargeableTimeHandler : GameStructurePacketHandler<C2SCharacterGetReviveChargeableTimeReq>
+    public class CharacterGetReviveChargeableTimeHandler : GameRequestPacketHandler<C2SCharacterGetReviveChargeableTimeReq, S2CCharacterGetReviveChargeableTimeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterGetReviveChargeableTimeHandler));
         
@@ -16,23 +16,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterGetReviveChargeableTimeReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterGetReviveChargeableTimeReq> packet, S2CCharacterGetReviveChargeableTimeRes response)
         {
-            S2CCharacterGetReviveChargeableTimeRes res = new S2CCharacterGetReviveChargeableTimeRes();
-
             if(Server.LastRevivalPowerRechargeTime.ContainsKey(client.Character.CharacterId))
             {
                 DateTime lastRechargeTime = Server.LastRevivalPowerRechargeTime[client.Character.CharacterId];
                 DateTime nextRechargeTime = lastRechargeTime.Add(DdonGameServer.RevivalPowerRechargeTimeSpan);
                 TimeSpan remainTimeSpan = nextRechargeTime - DateTime.UtcNow;
-                res.RemainTime = (uint) Math.Max(0, remainTimeSpan.TotalSeconds);
+                response.RemainTime = (uint) Math.Max(0, remainTimeSpan.TotalSeconds);
             }
             else
             {
-                res.RemainTime = 0;
+                response.RemainTime = 0;
             }
-
-            client.Send(res);
         }
     }
 }

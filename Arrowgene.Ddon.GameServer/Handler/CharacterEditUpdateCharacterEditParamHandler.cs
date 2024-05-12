@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdateCharacterEditParamHandler : GameStructurePacketHandler<C2SCharacterEditUpdateCharacterEditParamReq>
+    public class CharacterEditUpdateCharacterEditParamHandler : GameRequestPacketHandler<C2SCharacterEditUpdateCharacterEditParamReq, S2CCharacterEditUpdateCharacterEditParamRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdateCharacterEditParamHandler));
 
@@ -14,12 +14,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamReq> request, S2CCharacterEditUpdateCharacterEditParamRes response)
         {
             // TODO: Substract GG/Tickets
-            client.Character.EditInfo = packet.Structure.EditInfo;
+            client.Character.EditInfo = request.Structure.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);
-            client.Send(new S2CCharacterEditUpdateCharacterEditParamRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamNtc() {
                     CharacterId = client.Character.CharacterId,

@@ -5,7 +5,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarGetItemHistoryInfoHandler : GameStructurePacketHandler<C2SBazaarGetItemHistoryInfoReq>
+    public class BazaarGetItemHistoryInfoHandler : GameRequestPacketHandler<C2SBazaarGetItemHistoryInfoReq, S2CBazaarGetItemHistoryInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarGetItemHistoryInfoHandler));
         
@@ -13,9 +13,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetItemHistoryInfoReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetItemHistoryInfoReq> request, S2CBazaarGetItemHistoryInfoRes response)
         {
-            client.Send(new S2CBazaarGetItemHistoryInfoRes());
+            // TODO: Set response fields
         }
     }
 }

@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarGetItemListHandler : GameStructurePacketHandler<C2SBazaarGetItemListReq>
+    public class BazaarGetItemListHandler : GameRequestPacketHandler<C2SBazaarGetItemListReq, S2CBazaarGetItemListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarGetItemListHandler));
         
@@ -15,17 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetItemListReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetItemListReq> request, S2CBazaarGetItemListRes response)
         {
             // TODO: Fetch from DB
-            
-            client.Send(new S2CBazaarGetItemListRes() {
-                ItemList = packet.Structure.ItemIdList.Select(itemId => new CDataBazaarItemNumOfExhibitionInfo()
-                {
-                    ItemId = itemId.Value,
-                    Num = (ushort) Enumerable.Range(1, 10).Sum()
-                }).ToList()
-            });
+            response.ItemList = request.Structure.ItemIdList.Select(itemId => new CDataBazaarItemNumOfExhibitionInfo()
+            {
+                ItemId = itemId.Value,
+                Num = (ushort) Enumerable.Range(1, 10).Sum()
+            }).ToList();
         }
     }
 }

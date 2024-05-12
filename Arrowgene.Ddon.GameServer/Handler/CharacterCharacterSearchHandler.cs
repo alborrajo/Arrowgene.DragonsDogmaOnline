@@ -8,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterCharacterSearchHandler : GameStructurePacketHandler<C2SCharacterCharacterSearchReq>
+    public class CharacterCharacterSearchHandler : GameRequestPacketHandler<C2SCharacterCharacterSearchReq, S2CCharacterCharacterSearchRes>
     {
         private static readonly ServerLogger Logger =
             LogProvider.Logger<ServerLogger>(typeof(CharacterCharacterSearchHandler));
@@ -17,16 +17,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterSearchReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterSearchReq> request, S2CCharacterCharacterSearchRes response)
         {
-            S2CCharacterCharacterSearchRes res = new S2CCharacterCharacterSearchRes();
             foreach (Character character in Server.ClientLookup.GetAllCharacter())
             {
                 if (!character.FirstName.Contains(
-                        packet.Structure.SearchParam.FirstName, StringComparison.InvariantCultureIgnoreCase)
+                        request.Structure.SearchParam.FirstName, StringComparison.InvariantCultureIgnoreCase)
                     &&
                     !character.LastName.Contains(
-                        packet.Structure.SearchParam.LastName, StringComparison.InvariantCultureIgnoreCase)
+                        request.Structure.SearchParam.LastName, StringComparison.InvariantCultureIgnoreCase)
                    )
                 {
                     continue;
@@ -39,14 +38,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 CDataCharacterListElement characterListElement = new CDataCharacterListElement();
                 GameStructure.CDataCharacterListElement(characterListElement, character);
-                res.CharacterList.Add(characterListElement);
+                response.CharacterList.Add(characterListElement);
             }
 
-            Logger.Info(client, $"Found: {res.CharacterList.Count} Characters matching for query " +
-                                $"FirstName:{packet.Structure.SearchParam.FirstName} " +
-                                $"LastName:{packet.Structure.SearchParam.LastName}");
-
-            client.Send(res);
+            Logger.Info(client, $"Found: {response.CharacterList.Count} Characters matching for query " +
+                                $"FirstName:{request.Structure.SearchParam.FirstName} " +
+                                $"LastName:{request.Structure.SearchParam.LastName}");
         }
     }
 }

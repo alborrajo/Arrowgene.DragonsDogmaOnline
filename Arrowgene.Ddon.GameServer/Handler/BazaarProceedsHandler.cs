@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -13,26 +12,22 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarProceedsHandler : GameStructurePacketHandler<C2SBazaarProceedsReq>
+    public class BazaarProceedsHandler : GameRequestPacketHandler<C2SBazaarProceedsReq, S2CBazaarProceedsRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarProceedsHandler));
         
-        private readonly ItemManager _itemManager;
-
         public BazaarProceedsHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = server.ItemManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarProceedsReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SBazaarProceedsReq> request, S2CBazaarProceedsRes response)
         {
             // TODO: Fetch price by the BazaarId
-            ClientItemInfo boughtItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, packet.Structure.ItemId);
-            int totalItemAmount = packet.Structure.ItemStorageIndicateNum.Select(x => (int) x.ItemNum).Sum();
+            ClientItemInfo boughtItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, request.Structure.ItemId);
+            int totalItemAmount = request.Structure.ItemStorageIndicateNum.Select(x => (int) x.ItemNum).Sum();
             int totalPrice = boughtItemInfo.Price * totalItemAmount;
 
-            S2CBazaarProceedsRes res = new S2CBazaarProceedsRes();
-            res.BazaarId = packet.Structure.BazaarId;
+            response.BazaarId = request.Structure.BazaarId;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -49,29 +44,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
 
             // UPDATE INVENTORY
-            foreach (CDataItemStorageIndicateNum itemStorageIndicateNum in packet.Structure.ItemStorageIndicateNum)
+            foreach (CDataItemStorageIndicateNum itemStorageIndicateNum in request.Structure.ItemStorageIndicateNum)
             {
                 bool sendToItemBag;
                 switch(itemStorageIndicateNum.StorageType) {
                     case 19:
-                        // If packet.Structure.Destination is 19: Send to corresponding item bag
+                        // If request.Structure.Destination is 19: Send to corresponding item bag
                         sendToItemBag = true;
                         break;
                     case 20:
-                        // If packet.Structure.Destination is 20: Send to storage 
+                        // If request.Structure.Destination is 20: Send to storage 
                         sendToItemBag = false;
                         break;
                     default:
                         throw new Exception("Unexpected destination when buying goods: "+itemStorageIndicateNum.StorageType);
                 }
 
-                List<CDataItemUpdateResult> itemUpdateResult = _itemManager.AddItem(Server, client.Character, sendToItemBag, packet.Structure.ItemId, itemStorageIndicateNum.ItemNum);                
+                List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, sendToItemBag, request.Structure.ItemId, itemStorageIndicateNum.ItemNum);                
                 updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
             }
 
             // Send packets
             client.Send(updateCharacterItemNtc);
-            client.Send(res);
             // TODO: Send the NTC to the seller?
         }
     }

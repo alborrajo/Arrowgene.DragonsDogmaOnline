@@ -1,15 +1,13 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdatePawnEditParamExHandler : GameStructurePacketHandler<C2SCharacterEditUpdatePawnEditParamExReq>
+    public class CharacterEditUpdatePawnEditParamExHandler : GameRequestPacketHandler<C2SCharacterEditUpdatePawnEditParamExReq, S2CCharacterEditUpdatePawnEditParamExRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdatePawnEditParamExHandler));
         
@@ -17,15 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdatePawnEditParamExReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdatePawnEditParamExReq> request, S2CCharacterEditUpdatePawnEditParamExRes response)
         {
             // TODO: Substract GG
-            Pawn pawn = client.Character.PawnBySlotNo(packet.Structure.SlotNo);
-            pawn.EditInfo = packet.Structure.EditInfo;
+            Pawn pawn = client.Character.PawnBySlotNo(request.Structure.SlotNo);
+            pawn.EditInfo = request.Structure.EditInfo;
             Server.Database.UpdateEditInfo(pawn);
-            pawn.Name = packet.Structure.Name;
+            pawn.Name = request.Structure.Name;
             Server.Database.UpdatePawnBaseInfo(pawn);
-            client.Send(new S2CCharacterEditUpdatePawnEditParamExRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamExNtc() {
                     CharacterId = pawn.CharacterId,

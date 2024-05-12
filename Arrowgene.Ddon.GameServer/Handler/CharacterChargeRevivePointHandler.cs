@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterChargeRevivePointHandler : GameStructurePacketHandler<C2SCharacterChargeRevivePointReq>
+    public class CharacterChargeRevivePointHandler : GameRequestPacketHandler<C2SCharacterChargeRevivePointReq, S2CCharacterChargeRevivePointRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterChargeRevivePointHandler));
         
@@ -14,16 +14,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterChargeRevivePointReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterChargeRevivePointReq> request, S2CCharacterChargeRevivePointRes response)
         {
             client.Character.StatusInfo.RevivePoint = 3;
             Server.Database.UpdateStatusInfo(client.Character);
 
             Server.LastRevivalPowerRechargeTime[client.Character.CharacterId] = DateTime.UtcNow;
-
-            client.Send(new S2CCharacterChargeRevivePointRes() {
-                RevivePoint = client.Character.StatusInfo.RevivePoint
-            });
 
             S2CCharacterUpdateRevivePointNtc ntc = new S2CCharacterUpdateRevivePointNtc()
             {
@@ -31,6 +27,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RevivePoint = client.Character.StatusInfo.RevivePoint
             };
             client.Party.SendToAllExcept(ntc, client);
+
+            response.RevivePoint = client.Character.StatusInfo.RevivePoint;
         }
     }
 }

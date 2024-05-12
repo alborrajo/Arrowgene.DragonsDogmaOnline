@@ -1,14 +1,11 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterCharacterGoldenReviveHandler : StructurePacketHandler<GameClient, C2SCharacterCharacterGoldenReviveReq>
+    public class CharacterCharacterGoldenReviveHandler : GameRequestPacketHandler<C2SCharacterCharacterGoldenReviveReq, S2CCharacterCharacterGoldenReviveRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterCharacterGoldenReviveHandler));
 
@@ -16,12 +13,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterGoldenReviveReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterGoldenReviveReq> request, S2CCharacterCharacterGoldenReviveRes response)
         {
-            S2CCharacterCharacterGoldenReviveRes res = new S2CCharacterCharacterGoldenReviveRes();
-            res.GP = 69;
-
-            client.Send(res);
+            // TODO: Proper implementation
+            response.GP = 69;
         }
     }
 }

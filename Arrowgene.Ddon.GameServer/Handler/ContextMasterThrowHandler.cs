@@ -1,15 +1,11 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ContextMasterThrowHandler : GameStructurePacketHandler<C2SContextMasterThrowReq>
+    public class ContextMasterThrowHandler : GameRequestPacketHandler<C2SContextMasterThrowReq, S2CContextMasterThrowRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ContextMasterThrowHandler));
         
@@ -17,13 +13,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SContextMasterThrowReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SContextMasterThrowReq> request, S2CContextMasterThrowRes response)
         {
-            client.Send(new S2CContextMasterThrowRes());
-
             client.Party.SendToAll(new S2CContextMasterThrowNtc()
             {
-                Info = packet.Structure.Info
+                Info = request.Structure.Info
             });
         }
     }

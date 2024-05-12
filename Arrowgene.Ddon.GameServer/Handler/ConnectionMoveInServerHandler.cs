@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionMoveInServerHandler : GameStructurePacketHandler<C2SConnectionMoveInServerReq>
+    public class ConnectionMoveInServerHandler : GameRequestPacketHandler<C2SConnectionMoveInServerReq, S2CConnectionMoveInServerRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionMoveInServerHandler));
 
@@ -15,15 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SConnectionMoveInServerReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SConnectionMoveInServerReq> request, S2CConnectionMoveInServerRes response)
         {
-            Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey}");
-            GameToken token = Database.SelectToken(packet.Structure.SessionKey);
+            Logger.Debug(client, $"Received SessionKey:{request.Structure.SessionKey}");
+            GameToken token = Database.SelectToken(request.Structure.SessionKey);
             if (token == null)
             {
-                Logger.Error(client, $"SessionKey:{packet.Structure.SessionKey} not found");
-                // TODO reply error
-                // return;
+                Logger.Error(client, $"SessionKey:{request.Structure.SessionKey} not found");
+                throw new ResponseErrorException();
             }
 
             Database.DeleteTokenByAccountId(token.AccountId);
@@ -32,16 +31,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (account == null)
             {
                 Logger.Error(client, $"AccountId:{token.AccountId} not found");
-                // TODO reply error
-                // return;
+                throw new ResponseErrorException();
             }
 
             Character character = Database.SelectCharacter(token.CharacterId);
             if (character == null)
             {
                 Logger.Error(client, $"CharacterId:{token.CharacterId} not found");
-                // TODO reply error
-                // return;
+                throw new ResponseErrorException();
             }
 
             client.Account = account;
@@ -62,8 +59,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(new S2CItemExtendItemSlotNtc());
             // client.Send(GameFull.Dump_5);
             //  client.Send(GameFull.Dump_6);
-
-            client.Send(new S2CConnectionMoveInServerRes());
         }
     }
 }
