@@ -9,21 +9,16 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterCommunityCharacterStatusGetHandler : GameStructurePacketHandler<C2SCharacterCommunityCharacterStatusGetReq>
+    public class CharacterCommunityCharacterStatusGetHandler : GameRequestPacketHandler<C2SCharacterCommunityCharacterStatusGetReq, S2CCharacterCommunityCharacterStatusGetRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterCommunityCharacterStatusGetHandler));
-
 
         public CharacterCommunityCharacterStatusGetHandler(DdonGameServer server) : base(server)
         {
         }
 
-        // public override PacketId Id => PacketId.C2S_CHARACTER_COMMUNITY_CHARACTER_STATUS_GET_REQ;
-
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterCommunityCharacterStatusGetReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterCommunityCharacterStatusGetReq> request, S2CCharacterCommunityCharacterStatusGetRes response)
         {
-            // client.Send(InGameDump.Dump_65);
-
             List<CDataCharacterListElement> updateCharacterList = new List<CDataCharacterListElement>();
             List<CDataUpdateMatchingProfileInfo> updateMatchingProfileList = new List<CDataUpdateMatchingProfileInfo>();
             
@@ -49,11 +44,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 UpdateCharacterList = updateCharacterList,
                 UpdateMatchingProfileList = updateMatchingProfileList
-            });
-            
-            client.Send(new S2CCharacterCommunityCharacterStatusGetRes()
-            {
-                Result = updateCharacterList.Count + 1
             });
         }
     }
